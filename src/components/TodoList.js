@@ -2,6 +2,8 @@ import "../styles/todoList.css";
 import { useState } from "react";
 import Todo from "./Todo";
 import EditTodo from "./EditTodo";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 function TodoList({ id, title, description, completed }) {
   const [checked, setChecked] = useState(completed);
@@ -12,9 +14,25 @@ function TodoList({ id, title, description, completed }) {
   };
 
   /* function to update document in firestore */
-
+  const handleCheckedChange = async() => {
+    const todoDocRef = doc(db, 'tasks', id);
+    try{
+      await updateDoc(todoDocRef, {
+        completed:checked
+      })
+    } catch(err) {
+      alert(err)
+    }
+  };
   /* function to delete a document from firstore */
-
+  const handleDelete = async() => {
+    const todoDocRef = doc(db, 'tasks', id);
+    try{
+      await deleteDoc(todoDocRef)
+    } catch(err) {
+      alert(err)
+    }
+  };
   return (
     <div className={`todoList ${checked && "todoList--borderColor"}`}>
       <div>
@@ -24,7 +42,7 @@ function TodoList({ id, title, description, completed }) {
           name="checkbox"
           checked={checked}
           type="checkbox"
-          onChange={() => 1 + 1}
+          onChange={handleCheckedChange}
         />
         <label
           htmlFor={`checkbox-${id}`}
@@ -43,7 +61,7 @@ function TodoList({ id, title, description, completed }) {
             >
               Edit
             </button>
-            <button className="todoList__deleteButton">Delete</button>
+            <button onClick={handleDelete} className="todoList__deleteButton">Delete</button>
           </div>
           <button onClick={() => setOpen({ ...open, view: true })}>View</button>
         </div>
