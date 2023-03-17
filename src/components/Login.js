@@ -33,8 +33,7 @@ function Login() {
   };
 
     /*Login with Email & Password */
-    const loginWithEmailAndPass = async(e, email, password) => {
-        e.preventDefault()
+    const loginWithEmailAndPass = async( email, password) => {
         try {
             await signInWithEmailAndPassword(auth, email, password);
         } catch (err) {
