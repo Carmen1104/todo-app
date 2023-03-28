@@ -1,4 +1,4 @@
-import "../styles/todoList.css";
+import "../styles/todolist.css";
 import { useState } from "react";
 import Todo from "./Todo";
 import EditTodo from "./EditTodo";
